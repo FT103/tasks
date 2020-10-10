@@ -1,6 +1,7 @@
 ﻿using Challenge;
 using Challenge.DataContracts;
 using System;
+using System.Globalization;
 using Task = System.Threading.Tasks.Task;
 
 namespace ConsoleCoreApp
@@ -10,11 +11,11 @@ namespace ConsoleCoreApp
     // Для запуска приложения необходимо скачать и установить подходящую версию .NET Core.
     // Скачать можно тут: https://dotnet.microsoft.com/download/dotnet-core
     // Какая версия .NET Core нужна можно посмотреть в свойствах проекта.
-    class Program
+    public class Program
     {
         static async Task Main(string[] args)
         {
-            const string teamSecret = ""; // Вставь сюда ключ команды
+            const string teamSecret = "I6o8UqNPbYCzxbWGNz3gzDbFXLjtyh0K";
             if (string.IsNullOrEmpty(teamSecret))
             {
                 Console.WriteLine("Задай секрет своей команды, чтобы можно было делать запросы от ее имени");
@@ -32,7 +33,7 @@ namespace ConsoleCoreApp
             Console.WriteLine("----------------");
             Console.WriteLine();
 
-            const string taskType = "starter";
+            const string taskType = "math";
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -49,6 +50,7 @@ namespace ConsoleCoreApp
             for (int i = 0; i < firstTasks.Count; i++)
             {
                 var task = firstTasks[i];
+                
                 Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
                 Console.WriteLine($"  Формулировка: {task.UserHint}");
                 Console.WriteLine($"                {task.Question}");
@@ -68,7 +70,8 @@ namespace ConsoleCoreApp
             Console.WriteLine("----------------");
             Console.WriteLine();
 
-            const string answer = "42";
+
+            var answer = MathParser.GetAnswer(newTask.Question).ToString();
             Console.WriteLine($"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
