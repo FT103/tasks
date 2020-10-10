@@ -6,7 +6,7 @@ namespace ConsoleCoreApp
 {
     public static class MathParser
     {
-        public static double GetAnswer(string str) =>
+        public static int GetAnswer(string str) =>
             Calculate(GetReversePolishNotation(str));
 
         private static string GetReversePolishNotation(string input)
