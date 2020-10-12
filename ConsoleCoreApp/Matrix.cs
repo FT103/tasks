@@ -9,69 +9,20 @@ namespace ConsoleCoreApp
         
         
 
-        public static int[,] GetMatrix(string task)
-        {
-            var builder = new StringBuilder();
-            var isNegativeNumber = false;
-            var outputData = new int[3, 3];
-            var xIndex = 0;
-            var yIndex = 0;
-            var firstSlash = false;
-            foreach (var symbol in task)
-            {
-                if (firstSlash)
-                {
-                    firstSlash = false;
-                    continue;
-                }
-
-                if (symbol == '-')
-                {
-                    isNegativeNumber = true;
-                    continue;
-                }
-
-                if (symbol == ' ')
-                {
-                    continue;
-                }
-
-                if (symbol == '&')
-                {
-                    outputData[yIndex, xIndex] = isNegativeNumber
-                        ? -1 * int.Parse(builder.ToString())
-                        : int.Parse(builder.ToString());
-                    isNegativeNumber = false;
-                    builder.Clear();
-                    xIndex++;
-                    continue;
-                }
-
-                if (symbol == '\\')
-                {
-                    outputData[yIndex, xIndex] = isNegativeNumber
-                        ? -1 * int.Parse(builder.ToString())
-                        : int.Parse(builder.ToString());
-                    isNegativeNumber = false;
-                    builder.Clear();
-                    firstSlash = true;
-                    yIndex++;
-                    xIndex = 0;
-                    continue;
-                }
-
-                if (char.IsDigit(symbol))
-                {
-                    builder.Append(symbol);
-                }
-            }
-
-            outputData[yIndex, xIndex] = isNegativeNumber
-                ? -1 * int.Parse(builder.ToString())
-                : int.Parse(builder.ToString());
-            return outputData;
+        public static int[,] GetAnswer(string task) 
+        { 
+            var outputData = new int[3, 3]; 
+            var strInMatrix = task.Split(new string[] {@" \\ "},StringSplitOptions.None); 
+            for (int i = 0; i < strInMatrix.Length; i++) 
+            { 
+                var elementsInStr = strInMatrix[i].Split(new string[]{" & "}, StringSplitOptions.None); 
+                for (int j = 0; j < elementsInStr.Length; j++) 
+                { 
+                    outputData[i, j] = int.Parse(elementsInStr[j]); 
+                } 
+            } 
+            return outputData; 
         }
-
         public static int GetDeterminant(int[,] matrix)
         {
             var fDeterminant = 0;
