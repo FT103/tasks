@@ -1,3 +1,4 @@
+using System;
 using System.Text;
 
 namespace ConsoleCoreApp
@@ -9,7 +10,7 @@ namespace ConsoleCoreApp
         
         
 
-        public static int[,] GetAnswer(string task) 
+        public static int[,] GetMatrix(string task) 
         { 
             var outputData = new int[3, 3]; 
             var strInMatrix = task.Split(new string[] {@" \\ "},StringSplitOptions.None); 
