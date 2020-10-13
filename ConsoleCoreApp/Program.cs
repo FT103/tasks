@@ -6,11 +6,6 @@ using Task = System.Threading.Tasks.Task;
 
 namespace ConsoleCoreApp
 {
-    // Это рекомендуемый вариант приложения.
-    // Данное приложение можно запускать под Windows, Linux, Mac.
-    // Для запуска приложения необходимо скачать и установить подходящую версию .NET Core.
-    // Скачать можно тут: https://dotnet.microsoft.com/download/dotnet-core
-    // Какая версия .NET Core нужна можно посмотреть в свойствах проекта.
     public class Program
     {
         static async Task Main(string[] args)
@@ -21,6 +16,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("Задай секрет своей команды, чтобы можно было делать запросы от ее имени");
                 return;
             }
+
             var challengeClient = new ChallengeClient(teamSecret);
 
             const string challengeId = "projects-course";
@@ -32,7 +28,6 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-
             const string taskType = "polynomial-root";
 
             var utcNow = DateTime.UtcNow;
@@ -43,19 +38,21 @@ namespace ConsoleCoreApp
                     currentRound = round.Id;
             }
 
-            Console.WriteLine($"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
+            Console.WriteLine(
+                $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
             var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
             for (int i = 0; i < firstTasks.Count; i++)
             {
                 var task = firstTasks[i];
-                
+
                 Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
                 Console.WriteLine($"  Формулировка: {task.UserHint}");
                 Console.WriteLine($"                {task.Question}");
                 Console.WriteLine();
             }
+
             Console.WriteLine("----------------");
             Console.WriteLine();
 
@@ -63,8 +60,14 @@ namespace ConsoleCoreApp
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
 
-            for (var i = 0; i < 10; i++)
-            {
+
+            var newTask = await challengeClient.AskNewTaskAsync(currentRound, taskType);
+            Console.WriteLine($"  Новое задание, статус {newTask.Status}");
+            Console.WriteLine($"  Формулировка: {newTask.UserHint}");
+            Console.WriteLine($"                {newTask.Question}");
+            Console.WriteLine();
+            Console.WriteLine("----------------");
+            Console.WriteLine();
 
                 var newTask = await challengeClient.AskNewTaskAsync(currentRound, taskType);
                 Console.WriteLine($"  Новое задание, статус {newTask.Status}");
@@ -94,6 +97,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("----------------");
                 Console.WriteLine();
             }
+
 
 
             Console.WriteLine($"Нажми ВВОД, чтобы завершить работу программы");
