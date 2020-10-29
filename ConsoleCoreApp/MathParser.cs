@@ -6,8 +6,8 @@ namespace ConsoleCoreApp
 {
     public static class MathParser
     {
-        public static int GetAnswer(string str) =>
-            Calculate(GetReversePolishNotation(str));
+        public static string GetAnswer(string str) =>
+            Calculate(GetReversePolishNotation(str)).ToString();
 
         private static string GetReversePolishNotation(string input)
         {

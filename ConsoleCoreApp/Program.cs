@@ -69,8 +69,8 @@ namespace ConsoleCoreApp
             Console.WriteLine("----------------");
             Console.WriteLine();
 
-
-            var answer = Polynomial.GetRoot(newTask.Question);
+            var bot = new Bot();
+            var answer = bot.GetAnswer(taskType, newTask.Question);
             Console.WriteLine(
                 $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
             Console.ReadLine();
