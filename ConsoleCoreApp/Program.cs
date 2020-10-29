@@ -69,35 +69,25 @@ namespace ConsoleCoreApp
             Console.WriteLine("----------------");
             Console.WriteLine();
 
-                var newTask = await challengeClient.AskNewTaskAsync(currentRound, taskType);
-                Console.WriteLine($"  Новое задание, статус {newTask.Status}");
-                Console.WriteLine($"  Формулировка: {newTask.UserHint}");
-                Console.WriteLine($"                {newTask.Question}");
-                Console.WriteLine();
-                Console.WriteLine("----------------");
-                Console.WriteLine();
 
-
-                var answer = Polynomial.GetRoot(newTask.Question);
-                Console.WriteLine(
-                    $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
-                Console.ReadLine();
-                Console.WriteLine("Ожидание...");
-                var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
-                Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
-                Console.WriteLine($"  Формулировка:  {updatedTask.UserHint}");
-                Console.WriteLine($"                 {updatedTask.Question}");
-                Console.WriteLine($"  Ответ команды: {updatedTask.TeamAnswer}");
-                Console.WriteLine();
-                if (updatedTask.Status == TaskStatus.Success)
-                    Console.WriteLine($"Ура! Ответ угадан!");
-                else if (updatedTask.Status == TaskStatus.Failed)
-                    Console.WriteLine($"Похоже ответ не подошел и задачу больше сдать нельзя...");
-                Console.WriteLine();
-                Console.WriteLine("----------------");
-                Console.WriteLine();
-            }
-
+            var answer = Polynomial.GetRoot(newTask.Question);
+            Console.WriteLine(
+                $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
+            Console.ReadLine();
+            Console.WriteLine("Ожидание...");
+            var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
+            Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
+            Console.WriteLine($"  Формулировка:  {updatedTask.UserHint}");
+            Console.WriteLine($"                 {updatedTask.Question}");
+            Console.WriteLine($"  Ответ команды: {updatedTask.TeamAnswer}");
+            Console.WriteLine();
+            if (updatedTask.Status == TaskStatus.Success)
+                Console.WriteLine($"Ура! Ответ угадан!");
+            else if (updatedTask.Status == TaskStatus.Failed)
+                Console.WriteLine($"Похоже ответ не подошел и задачу больше сдать нельзя...");
+            Console.WriteLine();
+            Console.WriteLine("----------------");
+            Console.WriteLine();
 
 
             Console.WriteLine($"Нажми ВВОД, чтобы завершить работу программы");

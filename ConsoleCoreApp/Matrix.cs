@@ -10,7 +10,7 @@ namespace ConsoleCoreApp
         
         
 
-        public static int[,] GetMatrix(string task) 
+        private static int[,] GetMatrix(string task) 
         { 
             var outputData = new int[3, 3]; 
             var strInMatrix = task.Split(new string[] {@" \\ "},StringSplitOptions.None); 
@@ -24,7 +24,7 @@ namespace ConsoleCoreApp
             } 
             return outputData; 
         }
-        public static int GetDeterminant(int[,] matrix)
+        private static int GetDeterminant(int[,] matrix)
         {
             var fDeterminant = 0;
             var sDeterminant = 0;
@@ -55,7 +55,7 @@ namespace ConsoleCoreApp
             return sDeterminant;
         }
 
-        public static int GetDeterminant2(int[,] matrix)
+        private static int GetDeterminant2(int[,] matrix)
         {
             return matrix[0, 0] * matrix[1, 1] * matrix[2, 2] +
                    matrix[0, 1] * matrix[1, 2] * matrix[2, 0] +
