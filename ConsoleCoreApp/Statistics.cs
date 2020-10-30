@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -14,7 +15,7 @@ namespace ConsoleCoreApp
             if (list.Count != 0)
             {
                 if (fun == "min") return list[0].ToString();
-                if (fun == "max") return list[^1].ToString();
+                if (fun == "max") return list[new Index(1, true)].ToString();
             }
 
             return string.Empty;

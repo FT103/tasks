@@ -75,7 +75,7 @@ namespace ConsoleCoreApp
                 $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
-            var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, Console.ReadLine());
+            var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
             Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
             Console.WriteLine($"  Формулировка:  {updatedTask.UserHint}");
             Console.WriteLine($"                 {updatedTask.Question}");
