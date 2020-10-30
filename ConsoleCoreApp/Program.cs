@@ -20,15 +20,15 @@ namespace ConsoleCoreApp
             var challengeClient = new ChallengeClient(teamSecret);
 
             const string challengeId = "projects-course";
-            Console.WriteLine($"Нажми ВВОД, чтобы получить информацию о соревновании {challengeId}");
-            Console.ReadLine();
-            Console.WriteLine("Ожидание...");
+            //Console.WriteLine($"Нажми ВВОД, чтобы получить информацию о соревновании {challengeId}");
+            //Console.ReadLine();
+            //Console.WriteLine("Ожидание...");
             var challenge = await challengeClient.GetChallengeAsync(challengeId);
-            Console.WriteLine(challenge.Description);
-            Console.WriteLine();
-            Console.WriteLine("----------------");
-            Console.WriteLine();
-            const string taskType = "polynomial-root";
+            // Console.WriteLine(challenge.Description);
+            // Console.WriteLine();
+            // Console.WriteLine("----------------");
+            // Console.WriteLine();
+            //const string taskType = "polynomial-root";
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -38,44 +38,44 @@ namespace ConsoleCoreApp
                     currentRound = round.Id;
             }
 
-            Console.WriteLine(
-                $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
-            Console.ReadLine();
-            Console.WriteLine("Ожидание...");
-            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
-            for (int i = 0; i < firstTasks.Count; i++)
-            {
-                var task = firstTasks[i];
+            // Console.WriteLine(
+            //     $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
+            // Console.ReadLine();
+            // Console.WriteLine("Ожидание...");
+            // var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
+            // for (int i = 0; i < firstTasks.Count; i++)
+            // {
+            //     var task = firstTasks[i];
+            //
+            //     Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
+            //     Console.WriteLine($"  Формулировка: {task.UserHint}");
+            //     Console.WriteLine($"                {task.Question}");
+            //     Console.WriteLine();
+            // }
 
-                Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
-                Console.WriteLine($"  Формулировка: {task.UserHint}");
-                Console.WriteLine($"                {task.Question}");
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("----------------");
-            Console.WriteLine();
-
-            Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
-            Console.ReadLine();
-            Console.WriteLine("Ожидание...");
+            // Console.WriteLine("----------------");
+            // Console.WriteLine();
+            //
+            // Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
+            // Console.ReadLine();
+            // Console.WriteLine("Ожидание...");
 
 
-            var newTask = await challengeClient.AskNewTaskAsync(currentRound, taskType);
+            var newTask = await challengeClient.AskNewTaskAsync(currentRound);
             Console.WriteLine($"  Новое задание, статус {newTask.Status}");
             Console.WriteLine($"  Формулировка: {newTask.UserHint}");
             Console.WriteLine($"                {newTask.Question}");
             Console.WriteLine();
             Console.WriteLine("----------------");
-            Console.WriteLine();
+            Console.WriteLine($"Task id: {newTask.TypeId}");
 
             var bot = new Bot();
-            var answer = bot.GetAnswer(taskType, newTask.Question);
+            var answer = Bot.GetAnswer(newTask.TypeId, newTask.Question);
             Console.WriteLine(
                 $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
-            var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
+            var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, Console.ReadLine());
             Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
             Console.WriteLine($"  Формулировка:  {updatedTask.UserHint}");
             Console.WriteLine($"                 {updatedTask.Question}");
