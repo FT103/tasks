@@ -6,12 +6,24 @@ namespace ConsoleCoreApp
 {
     public static class MathParser
     {
-        public static string GetAnswer(string str) =>
-            Calculate(GetReversePolishNotation(str)).ToString();
+        public static string GetAnswer(string str)
+        {
+            var answers = new StringBuilder();
+            var tasks = ParseLine(str);
+            for (var i = 0; i < tasks.Count; i++)
+            {
+                answers.Append(Calculate(tasks[i]));
+                if (i != tasks.Count - 1)
+                    answers.Append(" ");
+            }
+
+            return answers.ToString();
+        }
+            
 
         private static string GetReversePolishNotation(string input)
         {
-            Stack<Char> operationStack = new Stack<char>();
+            Stack<char> operationStack = new Stack<char>();
             StringBuilder output = new StringBuilder();
             for (var i = 0; i < input.Length; i++)
             {
@@ -46,19 +58,19 @@ namespace ConsoleCoreApp
             while (operationStack.Count > 0)
                 output.Append(operationStack.Pop());
             {
-                
             }
             return output.ToString();
         }
-        
-        private static int Calculate(string str)
+
+        private static int Calculate(string input)
         {
+            var str = GetReversePolishNotation(input);
             var operand = string.Empty;
             var stack = new Stack<int>();
             for (var i = 0; i < str.Length; i++)
             {
-                if(str[i] == ' ') continue;
-                
+                if (str[i] == ' ') continue;
+
                 if (GetCharPriority(str[i]) == 0)
                 {
                     while (str[i] != ' ' && GetCharPriority(str[i]) == 0)
@@ -66,6 +78,7 @@ namespace ConsoleCoreApp
                         operand += str[i++];
                         if (i == str.Length) break;
                     }
+
                     stack.Push(int.Parse(operand));
                     operand = string.Empty;
                 }
@@ -76,16 +89,16 @@ namespace ConsoleCoreApp
                     var b = stack.Pop();
                     switch (str[i])
                     {
-                        case '*': 
-                            stack.Push( b * a);
+                        case '*':
+                            stack.Push(b * a);
                             break;
-                        case '/': 
+                        case '/':
                             stack.Push(b / a);
                             break;
-                        case '+': 
+                        case '+':
                             stack.Push(b + a);
                             break;
-                        case '-': 
+                        case '-':
                             stack.Push(b - a);
                             break;
                         case '%':
@@ -109,6 +122,69 @@ namespace ConsoleCoreApp
             if (ch == ')')
                 return -1;
             return 0;
+        }
+
+        public static List<string> ParseLine(string line)
+        {
+            var list = new List<string>();
+            var i = 0;
+            while (i < line.Length)
+            {
+                if (line[i] == ' ')
+                {
+                    i++;
+                    continue;
+                }
+
+                string str = string.Empty;
+
+                if (line[i] == '\"' || line[i] == '\'')
+                {
+                    str = ReadQuotedField(line, i);
+                    i += 2;
+                }
+                else if (line[i] != ' ')
+                    str = ReadField(line, i);
+
+                i += str.Length;
+                list.Add(str);
+            }
+
+            return list;
+        }
+
+        private static string ReadField(string line, int startIndex)
+        {
+            var value = new StringBuilder();
+            var i = startIndex;
+            while (i < line.Length)
+            {
+                if (line[i] == ' ' || line[i] == '\'' || line[i] == '\"') break;
+                value.Append(line[i++]);
+            }
+
+            return value.ToString();
+        }
+
+        public static string ReadQuotedField(string line, int startIndex)
+        {
+            var tokenEnd = line[startIndex];
+            var value = new StringBuilder();
+            var i = startIndex + 1;
+            while (i < line.Length)
+            {
+                if (line[i] == '\\')
+                    i++;
+                else if (line[i] == tokenEnd)
+                {
+                    i++;
+                    break;
+                }
+
+                value.Append(line[i++]);
+            }
+
+            return value.ToString();
         }
     }
 }
