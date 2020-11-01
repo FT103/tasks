@@ -15,9 +15,21 @@ namespace ConsoleCoreApp
             {
                 if (fun == "min") return list[0].ToString();
                 if (fun == "max") return list[new Index(1, true)].ToString();
+                if (fun == "sum") return GetSum(list).ToString();
             }
 
             return string.Empty;
+        }
+
+        private static int GetSum(List<int> list)
+        {
+            var sum = 0;
+            foreach (var num in list)
+            {
+                sum += num;
+            }
+
+            return sum;
         }
 
         private static List<int> GetSortedList(string input)
