@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace ConsoleCoreApp
 {
@@ -15,16 +13,22 @@ namespace ConsoleCoreApp
             var list = GetSortedList(stringArray);
             if (list.Count != 0)
             {
-                if (fun == "min") return list[0];
-                if (fun == "max") return list[new Index(1, true)];
+                if (fun == "min") return list[0].ToString();
+                if (fun == "max") return list[new Index(1, true)].ToString();
             }
 
             return string.Empty;
         }
 
-        private static List<string> GetSortedList(string input)
+        private static List<int> GetSortedList(string input)
         {
-            var list = input.Split(' ').ToList();
+            var arr = input.Split(' ');
+            var list = new List<int>();
+            foreach (var num in arr)
+            {
+                list.Add(int.Parse(num));
+            }
+            
             list.Sort();
             return list;
         }

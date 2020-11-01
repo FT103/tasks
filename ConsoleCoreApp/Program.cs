@@ -87,10 +87,6 @@ namespace ConsoleCoreApp
                 Console.WriteLine();
                 Console.WriteLine("----------------");
                 Console.WriteLine();
-
-
-                Console.WriteLine("Нажми ВВОД, чтобы завершить работу программы");
-                Console.ReadLine();
             }
         }
     }
