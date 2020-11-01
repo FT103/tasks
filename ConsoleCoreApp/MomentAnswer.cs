@@ -12,7 +12,7 @@
             var parts = task.Split(' ');
             var time = parts[0].Split(':');
             var data = parts[1].Split('.');
-            var result = data[0] + " " + months[int.Parse(data[1]) - 1] + " " + time[0] + ":" + time[1];
+            var result = int.Parse(data[0]) + " " + months[int.Parse(data[1]) - 1] + " " + time[0] + ":" + time[1];
             return result;
         }
     }
