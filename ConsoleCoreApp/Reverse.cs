@@ -29,26 +29,13 @@ namespace ConsoleCoreApp
             var task = parsedString[0];
             var code = int.Parse(task.Split('=')[1]);
             for (var i = 0; i < data.Length; i++)
-                if (char.IsLetter(data[i]))
-                {
-                    var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
-                    if (nextIndex < 0)
-                        sb.Append(allSymbols[allSymbols.Length + nextIndex]);
-                    else
-                        sb.Append(allSymbols[nextIndex % allSymbols.Length]);
-                }
-                else if (char.IsDigit(data[i]))
-                {
-                    var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
-                    if (nextIndex < 0)
-                        sb.Append(allSymbols[allSymbols.Length + nextIndex]);
-                    else
-                        sb.Append(allSymbols[nextIndex % allSymbols.Length]);
-                }
+            {
+                var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
+                if (nextIndex < 0)
+                    sb.Append(allSymbols[allSymbols.Length + nextIndex]);
                 else
-                {
-                    sb.Append(data[i]);
-                }
+                    sb.Append(allSymbols[nextIndex % allSymbols.Length]);
+            }
             return sb.ToString();
         }
     }
