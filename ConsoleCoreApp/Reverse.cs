@@ -22,36 +22,33 @@ namespace ConsoleCoreApp
 
         private static string CaesarCode(string str)
         {
-            var alphabet = "abcdefghijklmnopqrstuvwxyz";
-            var numbers = "0123456789";
+            var allSymbols = "abcdefghijklmnopqrstuvwxyz0123456789' ";
             var sb = new StringBuilder();
             var parsedString = str.Split('|');
             var data = parsedString[1];
             var task = parsedString[0];
             var code = int.Parse(task.Split('=')[1]);
-
             for (var i = 0; i < data.Length; i++)
                 if (char.IsLetter(data[i]))
                 {
-                    var nextIndex = alphabet.IndexOf(data[i]) + code % alphabet.Length;
+                    var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
                     if (nextIndex < 0)
-                        sb.Append(alphabet[alphabet.Length + nextIndex]);
+                        sb.Append(allSymbols[allSymbols.Length + nextIndex]);
                     else
-                        sb.Append(alphabet[nextIndex % alphabet.Length]);
+                        sb.Append(allSymbols[nextIndex % allSymbols.Length]);
                 }
                 else if (char.IsDigit(data[i]))
                 {
-                    var nextIndex = numbers.IndexOf(data[i]) + code % numbers.Length;
+                    var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
                     if (nextIndex < 0)
-                        sb.Append(numbers[numbers.Length + nextIndex]);
+                        sb.Append(allSymbols[allSymbols.Length + nextIndex]);
                     else
-                        sb.Append(numbers[nextIndex % numbers.Length]);
+                        sb.Append(allSymbols[nextIndex % allSymbols.Length]);
                 }
                 else
                 {
                     sb.Append(data[i]);
                 }
-
             return sb.ToString();
         }
     }
