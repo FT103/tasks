@@ -36,7 +36,7 @@ namespace ConsoleCoreApp
             sb.Clear();
             for (var i = 0; i < data.Length; i++)
             {
-                sb.Append((char) (data[i] + code));
+                sb.Append((char) (data[i] - code));
             }
 
             return sb.ToString();
