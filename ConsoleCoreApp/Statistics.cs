@@ -32,6 +32,12 @@ namespace ConsoleCoreApp
             return sum;
         }
 
+        private static int GetMedian(List<int> list)
+        {
+            if (list.Count % 2 == 1) return list[list.Count / 2];
+            return (list[list.Count / 2] + list[list.Count / 2 + 1]) / 2;
+        }
+
         private static List<int> GetSortedList(string input)
         {
             var arr = input.Split(' ');
