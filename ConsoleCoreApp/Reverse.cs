@@ -13,6 +13,7 @@ namespace ConsoleCoreApp
         
         private static string ReverseStringBuilder(string str)
         {
+            
             StringBuilder sb = new StringBuilder();
             var text = str.Split('|');
             for (var i = text[1].Length - 1; i >= 0; i--)
@@ -22,21 +23,20 @@ namespace ConsoleCoreApp
 
         private static string CaesarCode(string str)
         {
+            var alphabet = "abcdefghijklmnopqrstuvwxyz";
+            var numbers = "0123456789";
             StringBuilder sb = new StringBuilder();
             var parsedString = str.Split('|');
             var data = parsedString[1];
             var task = parsedString[0];
-            for (var i = 0; i < task.Length; i++)
-            {
-                if (char.IsDigit(task[i]))
-                    sb.Append(task[i]);
-            }
-
-            var code = int.Parse(sb.ToString()) % 26;
-            sb.Clear();
+            var code = int.Parse(task.Split('=')[1]) % 26;
+            
             for (var i = 0; i < data.Length; i++)
             {
-                sb.Append((char) (data[i] + code));
+                if (char.IsLetter(data[i]))
+                    sb.Append(alphabet[(alphabet.IndexOf(data[i]) + code) % alphabet.Length]);
+                if (char.IsDigit(data[i]))
+                    sb.Append(alphabet[(numbers.IndexOf(data[i]) + code) % numbers.Length]);
             }
 
             return sb.ToString();
