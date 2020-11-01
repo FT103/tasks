@@ -1,6 +1,4 @@
-﻿﻿using System.Text;
-
-namespace ConsoleCoreApp
+﻿namespace ConsoleCoreApp
 {
     public class MomentAnswer
     {
@@ -8,8 +6,8 @@ namespace ConsoleCoreApp
         {
             var months = new[]
             {
-                "января", "февраля", "марта","апреля","мая","июня",
-                "июля","августа","сентября","октября", "ноября", "декабря"
+                "января", "февраля", "марта", "апреля", "мая", "июня",
+                "июля", "августа", "сентября", "октября", "ноября", "декабря"
             };
             var parts = task.Split(' ');
             var time = parts[0].Split(':');
@@ -17,6 +15,5 @@ namespace ConsoleCoreApp
             var result = data[0] + " " + months[int.Parse(data[1]) - 1] + " " + time[0] + ":" + time[1];
             return result;
         }
-        
     }
 }

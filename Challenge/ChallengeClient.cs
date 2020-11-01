@@ -1,22 +1,22 @@
-﻿using Challenge.DataContracts;
-using Challenge.Extensions;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
+using Challenge.DataContracts;
+using Challenge.Extensions;
 using TaskStatus = Challenge.DataContracts.TaskStatus;
 
 namespace Challenge
 {
     public class ChallengeClient
     {
-        private readonly string teamSecret;
         private readonly string baseUrl = "https://task-challenge.azurewebsites.net";
         private readonly HttpClient httpClient = new HttpClient();
+        private readonly string teamSecret;
 
         /// <summary>
-        /// Создает клиента к API платформы соревнований
+        ///     Создает клиента к API платформы соревнований
         /// </summary>
         /// <param name="teamSecret">Секрет команды для авторизации запросов</param>
         public ChallengeClient(string teamSecret)
@@ -25,7 +25,7 @@ namespace Challenge
         }
 
         /// <summary>
-        /// Получает информацию о челлендже, доступную команде
+        ///     Получает информацию о челлендже, доступную команде
         /// </summary>
         /// <param name="challengeId">Идентификатор челленджа</param>
         /// <returns>Информация о челлендже</returns>
@@ -46,7 +46,7 @@ namespace Challenge
         }
 
         /// <summary>
-        /// Запрашивает новое задание некоторого типа в некотором раунде для команды
+        ///     Запрашивает новое задание некоторого типа в некотором раунде для команды
         /// </summary>
         /// <param name="round">Идентификатор раунда</param>
         /// <param name="taskType">Тип задачи. Если не передать, будет выбрана задача случайного типа</param>
@@ -60,7 +60,7 @@ namespace Challenge
                 query.Add("type", taskType);
 
             var url = new UriBuilder(baseUrl);
-            url.Path = $"/api/tasks";
+            url.Path = "/api/tasks";
             url.Query = query.ToString();
 
             var response = await httpClient.PostAsync(url.ToString(), null);
@@ -71,7 +71,7 @@ namespace Challenge
         }
 
         /// <summary>
-        /// Отправляет ответ на задание
+        ///     Отправляет ответ на задание
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         /// <returns>Новое состояние задания, на которое давался ответ</returns>
@@ -84,7 +84,7 @@ namespace Challenge
             url.Path = $"/api/tasks/{HttpUtility.UrlEncode(taskId)}";
             url.Query = query.ToString();
 
-            var content = new AnswerRequest { Answer = answer }.SerializeToJsonContent();
+            var content = new AnswerRequest {Answer = answer}.SerializeToJsonContent();
             var response = await httpClient.PostAsync(url.ToString(), content);
 
             if (response.IsSuccessStatusCode)
@@ -93,7 +93,7 @@ namespace Challenge
         }
 
         /// <summary>
-        /// Получает все задания, запрошенные командой
+        ///     Получает все задания, запрошенные командой
         /// </summary>
         /// <param name="round">Идентификатор раунда</param>
         /// <param name="taskType">Тип задачи</param>
@@ -108,12 +108,12 @@ namespace Challenge
             query.Add("secret", teamSecret);
             query.Add("round", round);
             query.Add("type", taskType);
-            query.Add("status", ((int)taskStatus).ToString());
+            query.Add("status", ((int) taskStatus).ToString());
             query.Add("offset", offset.ToString());
             query.Add("count", count.ToString());
 
             var url = new UriBuilder(baseUrl);
-            url.Path = $"/api/tasks";
+            url.Path = "/api/tasks";
             url.Query = query.ToString();
 
             var response = await httpClient.GetAsync(url.ToString());
@@ -124,7 +124,7 @@ namespace Challenge
         }
 
         /// <summary>
-        /// Получает задание по идентификатору
+        ///     Получает задание по идентификатору
         /// </summary>
         /// <param name="taskId">Идентификатор задания</param>
         /// <returns>Запрошенное задание</returns>

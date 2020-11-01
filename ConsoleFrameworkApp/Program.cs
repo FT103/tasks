@@ -1,7 +1,7 @@
-﻿using Challenge;
-using Challenge.DataContracts;
-using System;
-using Task = System.Threading.Tasks.Task;
+﻿using System;
+using System.Threading.Tasks;
+using Challenge;
+using TaskStatus = Challenge.DataContracts.TaskStatus;
 
 namespace ConsoleFrameworkApp
 {
@@ -10,9 +10,9 @@ namespace ConsoleFrameworkApp
     // .NET Framework скорее всего установлен в Windows по умолчанию,
     // либо может быть установлен вместе Visual Studio, либо отдельно.
     // Также это приложение можно запускать на Linux под Mono, но для этой ОС рекомендуется использовать ConsoleCoreApp для .NET Core.
-    class Program
+    internal class Program
     {
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             const string teamSecret = ""; // Вставь сюда ключ команды
             if (string.IsNullOrEmpty(teamSecret))
@@ -20,6 +20,7 @@ namespace ConsoleFrameworkApp
                 Console.WriteLine("Задай секрет своей команды, чтобы можно было делать запросы от ее имени");
                 return;
             }
+
             var challengeClient = new ChallengeClient(teamSecret);
 
             const string challengeId = "projects-course";
@@ -37,16 +38,15 @@ namespace ConsoleFrameworkApp
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
             foreach (var round in challenge.Rounds)
-            {
                 if (round.StartTimestamp < utcNow && utcNow < round.EndTimestamp)
                     currentRound = round.Id;
-            }
 
-            Console.WriteLine($"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
+            Console.WriteLine(
+                $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
             Console.ReadLine();
             Console.WriteLine("Ожидание...");
-            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
-            for (int i = 0; i < firstTasks.Count; i++)
+            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending);
+            for (var i = 0; i < firstTasks.Count; i++)
             {
                 var task = firstTasks[i];
                 Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
@@ -54,6 +54,7 @@ namespace ConsoleFrameworkApp
                 Console.WriteLine($"                {task.Question}");
                 Console.WriteLine();
             }
+
             Console.WriteLine("----------------");
             Console.WriteLine();
 
@@ -79,14 +80,14 @@ namespace ConsoleFrameworkApp
             Console.WriteLine($"  Ответ команды: {updatedTask.TeamAnswer}");
             Console.WriteLine();
             if (updatedTask.Status == TaskStatus.Success)
-                Console.WriteLine($"Ура! Ответ угадан!");
+                Console.WriteLine("Ура! Ответ угадан!");
             else if (updatedTask.Status == TaskStatus.Failed)
-                Console.WriteLine($"Похоже ответ не подошел и задачу больше сдать нельзя...");
+                Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
 
-            Console.WriteLine($"Нажми ВВОД, чтобы завершить работу программы");
+            Console.WriteLine("Нажми ВВОД, чтобы завершить работу программы");
             Console.ReadLine();
         }
     }

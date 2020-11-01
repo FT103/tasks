@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -6,13 +5,15 @@ namespace ConsoleCoreApp
 {
     public static class MathParser
     {
-        public static string GetAnswer(string str) =>
-            Calculate(GetReversePolishNotation(str)).ToString();
+        public static string GetAnswer(string str)
+        {
+            return Calculate(GetReversePolishNotation(str)).ToString();
+        }
 
         private static string GetReversePolishNotation(string input)
         {
-            Stack<Char> operationStack = new Stack<char>();
-            StringBuilder output = new StringBuilder();
+            var operationStack = new Stack<char>();
+            var output = new StringBuilder();
             for (var i = 0; i < input.Length; i++)
             {
                 var priority = GetCharPriority(input[i]);
@@ -25,11 +26,9 @@ namespace ConsoleCoreApp
                     output.Append(' ');
 
                     while (operationStack.Count > 0)
-                    {
                         if (GetCharPriority(operationStack.Peek()) >= priority)
                             output.Append(operationStack.Pop());
                         else break;
-                    }
 
                     operationStack.Push(input[i]);
                 }
@@ -46,19 +45,18 @@ namespace ConsoleCoreApp
             while (operationStack.Count > 0)
                 output.Append(operationStack.Pop());
             {
-                
             }
             return output.ToString();
         }
-        
+
         private static int Calculate(string str)
         {
             var operand = string.Empty;
             var stack = new Stack<int>();
             for (var i = 0; i < str.Length; i++)
             {
-                if(str[i] == ' ') continue;
-                
+                if (str[i] == ' ') continue;
+
                 if (GetCharPriority(str[i]) == 0)
                 {
                     while (str[i] != ' ' && GetCharPriority(str[i]) == 0)
@@ -66,6 +64,7 @@ namespace ConsoleCoreApp
                         operand += str[i++];
                         if (i == str.Length) break;
                     }
+
                     stack.Push(int.Parse(operand));
                     operand = string.Empty;
                 }
@@ -76,16 +75,16 @@ namespace ConsoleCoreApp
                     var b = stack.Pop();
                     switch (str[i])
                     {
-                        case '*': 
-                            stack.Push( b * a);
+                        case '*':
+                            stack.Push(b * a);
                             break;
-                        case '/': 
+                        case '/':
                             stack.Push(b / a);
                             break;
-                        case '+': 
+                        case '+':
                             stack.Push(b + a);
                             break;
-                        case '-': 
+                        case '-':
                             stack.Push(b - a);
                             break;
                         case '%':

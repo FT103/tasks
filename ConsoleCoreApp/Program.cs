@@ -1,14 +1,13 @@
-﻿using Challenge;
-using Challenge.DataContracts;
-using System;
-using System.Globalization;
-using Task = System.Threading.Tasks.Task;
+﻿using System;
+using System.Threading.Tasks;
+using Challenge;
+using TaskStatus = Challenge.DataContracts.TaskStatus;
 
 namespace ConsoleCoreApp
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        private static async Task Main(string[] args)
         {
             const string teamSecret = "I6o8UqNPbYCzxbWGNz3gzDbFXLjtyh0K";
             if (string.IsNullOrEmpty(teamSecret))
@@ -33,10 +32,8 @@ namespace ConsoleCoreApp
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
             foreach (var round in challenge.Rounds)
-            {
                 if (round.StartTimestamp < utcNow && utcNow < round.EndTimestamp)
                     currentRound = round.Id;
-            }
 
             // Console.WriteLine(
             //     $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
@@ -82,15 +79,15 @@ namespace ConsoleCoreApp
             Console.WriteLine($"  Ответ команды: {updatedTask.TeamAnswer}");
             Console.WriteLine();
             if (updatedTask.Status == TaskStatus.Success)
-                Console.WriteLine($"Ура! Ответ угадан!");
+                Console.WriteLine("Ура! Ответ угадан!");
             else if (updatedTask.Status == TaskStatus.Failed)
-                Console.WriteLine($"Похоже ответ не подошел и задачу больше сдать нельзя...");
+                Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
 
 
-            Console.WriteLine($"Нажми ВВОД, чтобы завершить работу программы");
+            Console.WriteLine("Нажми ВВОД, чтобы завершить работу программы");
             Console.ReadLine();
         }
     }

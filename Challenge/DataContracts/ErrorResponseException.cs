@@ -1,7 +1,7 @@
-﻿using Challenge.Extensions;
-using System;
+﻿using System;
 using System.Net;
 using System.Net.Http;
+using Challenge.Extensions;
 
 namespace Challenge.DataContracts
 {

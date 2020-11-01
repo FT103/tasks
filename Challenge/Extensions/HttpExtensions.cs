@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System.Net.Http;
+﻿using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace Challenge.Extensions
 {
@@ -16,7 +16,7 @@ namespace Challenge.Extensions
 
         public static ByteArrayContent SerializeToJsonContent<T>(this T obj)
         {
-            string json = JsonConvert.SerializeObject(obj);
+            var json = JsonConvert.SerializeObject(obj);
             var bytes = Encoding.UTF8.GetBytes(json);
             var content = new ByteArrayContent(bytes);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");

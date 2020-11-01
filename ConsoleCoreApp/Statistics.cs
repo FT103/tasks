@@ -29,11 +29,9 @@ namespace ConsoleCoreApp
             {
                 if (char.IsDigit(input[i]))
                     digit.Append(input[i]);
-                if (char.IsWhiteSpace(input[i]))
-                {
-                    list.Add(int.Parse(digit.ToString()));
-                }
+                if (char.IsWhiteSpace(input[i])) list.Add(int.Parse(digit.ToString()));
             }
+
             list.Sort();
             return list;
         }
