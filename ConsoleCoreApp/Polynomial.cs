@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Globalization;
-using Challenge.DataContracts;
+using System.Threading;
 
 namespace ConsoleCoreApp
 {
@@ -21,17 +21,23 @@ namespace ConsoleCoreApp
                 parts = task.Split("*x^2+");
                 if (parts[0] == task) parts[0] = "1";
                 parts[0] = SearchZeros(parts[0]);
-                if (IsSecondCoef(task)) otherKoef = parts[1].Split("*x+");
+                if (IsSecondCoef(task))
+                {
+                    otherKoef = parts[1].Split("*x+");
+                }
                 else
                 {
                     otherKoef[0] = "0";
                     otherKoef[1] = task.Split('+')[1];
                 }
             }
+
             otherKoef[0] = SearchZeros(otherKoef[0]);
             otherKoef[1] = SearchZeros(otherKoef[1]);
-            double a=0; double b=0; double c=0;
-            System.Threading.Thread.CurrentThread.CurrentCulture = new System.Globalization.CultureInfo("en-US");
+            double a = 0;
+            double b = 0;
+            double c = 0;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
             if (IsQuadraticPolynomial(task)) a = double.Parse(parts[0]);
             b = double.Parse(otherKoef[0]);
             c = double.Parse(otherKoef[1]);
@@ -44,26 +50,28 @@ namespace ConsoleCoreApp
         {
             if (koef[0] == '(')
                 return koef.Substring(1, koef.Length - 2);
-            return koef;           
+            return koef;
         }
 
-        private static string SearchZeros (string koef)
+        private static string SearchZeros(string koef)
         {
             if (koef.Length != 0) return DeleteBrackets(koef);
-            else return "0";
+            return "0";
         }
 
-        private static bool IsQuadraticPolynomial (string task)
+        private static bool IsQuadraticPolynomial(string task)
         {
             foreach (var symbol in task)
-                if (symbol == '^') return true;
+                if (symbol == '^')
+                    return true;
             return false;
         }
-        
-        private static bool IsSecondCoef (string task)
+
+        private static bool IsSecondCoef(string task)
         {
             for (var i = 0; i < task.Length - 1; i++)
-                if ((task[i] == 'x') && (task[i + 1] == '+')) return true;
+                if (task[i] == 'x' && task[i + 1] == '+')
+                    return true;
             return false;
         }
     }

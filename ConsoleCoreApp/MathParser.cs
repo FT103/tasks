@@ -36,11 +36,9 @@ namespace ConsoleCoreApp
                     output.Append(' ');
 
                     while (operationStack.Count > 0)
-                    {
                         if (GetCharPriority(operationStack.Peek()) >= priority)
                             output.Append(operationStack.Pop());
                         else break;
-                    }
 
                     operationStack.Push(input[i]);
                 }
@@ -60,6 +58,7 @@ namespace ConsoleCoreApp
             }
             return output.ToString();
         }
+
 
         private static int Calculate(string input)
         {

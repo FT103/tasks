@@ -4,6 +4,7 @@ namespace Challenge.DataContracts
 {
     public class TaskResponse
     {
+        public DateTime ResponseTime = DateTime.UtcNow;
         public string Id { get; set; }
         public string ChallengeId { get; set; }
         public string TeamId { get; set; }
@@ -18,8 +19,6 @@ namespace Challenge.DataContracts
 
         public DateTime TakeTimestamp { get; set; }
         public DateTime? AnswerTimestamp { get; set; }
-
-        public DateTime ResponseTime = DateTime.UtcNow;
 
         public string TeamAnswer { get; set; }
         public TaskStatus Status { get; set; }
