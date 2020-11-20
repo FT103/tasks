@@ -16,6 +16,7 @@ namespace ConsoleCoreApp
                 if (fun == "min") return list[0].ToString();
                 if (fun == "max") return list[new Index(1, true)].ToString();
                 if (fun == "sum") return GetSum(list).ToString();
+                if (fun == "median") return GetMedian(list).ToString();
             }
 
             return string.Empty;
