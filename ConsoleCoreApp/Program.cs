@@ -23,11 +23,11 @@ namespace ConsoleCoreApp
             //Console.ReadLine();
             //Console.WriteLine("Ожидание...");
             var challenge = await challengeClient.GetChallengeAsync(challengeId);
-            // Console.WriteLine(challenge.Description);
-            // Console.WriteLine();
-            // Console.WriteLine("----------------");
-            // Console.WriteLine();
-            //const string taskType = "polynomial-root";
+            Console.WriteLine(challenge.Description);
+            Console.WriteLine();
+            Console.WriteLine("----------------");
+            Console.WriteLine();
+            const string taskType = "statistics"; //название задачи
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -39,28 +39,28 @@ namespace ConsoleCoreApp
             //     $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
             // Console.ReadLine();
             // Console.WriteLine("Ожидание...");
-            // var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
-            // for (int i = 0; i < firstTasks.Count; i++)
-            // {
-            //     var task = firstTasks[i];
-            //
-            //     Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
-            //     Console.WriteLine($"  Формулировка: {task.UserHint}");
-            //     Console.WriteLine($"                {task.Question}");
-            //     Console.WriteLine();
-            // }
+            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
+            for (int i = 0; i < firstTasks.Count; i++)
+            {
+                var task = firstTasks[i];
 
-            // Console.WriteLine("----------------");
-            // Console.WriteLine();
-            //
-            // Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
-            // Console.ReadLine();
-            // Console.WriteLine("Ожидание...");
+                Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
+                Console.WriteLine($"  Формулировка: {task.UserHint}");
+                Console.WriteLine($"                {task.Question}");
+                Console.WriteLine();
+            }
+
+            Console.WriteLine("----------------");
+            Console.WriteLine();
+
+            Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
+            Console.ReadLine();
+            Console.WriteLine("Ожидание...");
 
 
             while (true)
             {
-                var newTask = await challengeClient.AskNewTaskAsync(currentRound);
+                var newTask = await challengeClient.AskNewTaskAsync(currentRound, taskType);
                 Console.WriteLine($"  Новое задание, статус {newTask.Status}");
                 Console.WriteLine($"  Формулировка: {newTask.UserHint}");
                 Console.WriteLine($"                {newTask.Question}");
@@ -83,7 +83,12 @@ namespace ConsoleCoreApp
                 if (updatedTask.Status == TaskStatus.Success)
                     Console.WriteLine("Ура! Ответ угадан!");
                 else if (updatedTask.Status == TaskStatus.Failed)
+                {
                     Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
+                    Console.ReadLine();
+                    break;
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("----------------");
                 Console.WriteLine();
