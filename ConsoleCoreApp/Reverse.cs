@@ -38,5 +38,10 @@ namespace ConsoleCoreApp
             }
             return sb.ToString();
         }
+
+        private static bool Get()
+        {
+            return true;
+        }
     }
 }
