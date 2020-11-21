@@ -72,10 +72,26 @@ namespace ConsoleCoreApp
 
         private static int GetDeterminant4(int[,] matrix)
         {
-            return matrix[0,0] * GetDeterminant3(new [,] {{matrix[1,1], matrix[1,2], matrix[1,3]}, {matrix[2,1], matrix[2,2], matrix[2,3]}, {matrix[3,1], matrix[3,2], matrix[3,3]}}) 
-                - matrix[0,1] * GetDeterminant3(new [,] {{matrix[1,0], matrix[1,2], matrix[1,3]}, {matrix[2,0], matrix[2,2], matrix[2,3]}, {matrix[3,0], matrix[3,2], matrix[3,3]}}) 
-                + matrix[0,2] * GetDeterminant3(new [,] {{matrix[1,0], matrix[1,1], matrix[1,3]}, {matrix[2,0], matrix[2,1], matrix[2,3]}, {matrix[3,0], matrix[3,1], matrix[3,3]}})
-                - matrix[0,3] * GetDeterminant3(new [,] {{matrix[1,0], matrix[1,1], matrix[1,2]}, {matrix[2,0], matrix[2,1], matrix[2,2]}, {matrix[3,0], matrix[3,1], matrix[3,2]}});
+            return matrix[0, 0] * GetDeterminant3(new[,]
+                   {
+                       {matrix[1, 1], matrix[1, 2], matrix[1, 3]}, {matrix[2, 1], matrix[2, 2], matrix[2, 3]},
+                       {matrix[3, 1], matrix[3, 2], matrix[3, 3]}
+                   })
+                   - matrix[0, 1] * GetDeterminant3(new[,]
+                   {
+                       {matrix[1, 0], matrix[1, 2], matrix[1, 3]}, {matrix[2, 0], matrix[2, 2], matrix[2, 3]},
+                       {matrix[3, 0], matrix[3, 2], matrix[3, 3]}
+                   })
+                   + matrix[0, 2] * GetDeterminant3(new[,]
+                   {
+                       {matrix[1, 0], matrix[1, 1], matrix[1, 3]}, {matrix[2, 0], matrix[2, 1], matrix[2, 3]},
+                       {matrix[3, 0], matrix[3, 1], matrix[3, 3]}
+                   })
+                   - matrix[0, 3] * GetDeterminant3(new[,]
+                   {
+                       {matrix[1, 0], matrix[1, 1], matrix[1, 2]}, {matrix[2, 0], matrix[2, 1], matrix[2, 2]},
+                       {matrix[3, 0], matrix[3, 1], matrix[3, 2]}
+                   });
         }
     }
 }

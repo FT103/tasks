@@ -25,10 +25,7 @@ namespace ConsoleCoreApp
         private static int GetSum(List<int> list)
         {
             var sum = 0;
-            foreach (var num in list)
-            {
-                sum += num;
-            }
+            foreach (var num in list) sum += num;
 
             return sum;
         }
@@ -43,11 +40,8 @@ namespace ConsoleCoreApp
         {
             var arr = input.Split(' ');
             var list = new List<int>();
-            foreach (var num in arr)
-            {
-                list.Add(int.Parse(num));
-            }
-            
+            foreach (var num in arr) list.Add(int.Parse(num));
+
             list.Sort();
             return list;
         }

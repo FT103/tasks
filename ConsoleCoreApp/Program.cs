@@ -39,8 +39,8 @@ namespace ConsoleCoreApp
             //     $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
             // Console.ReadLine();
             // Console.WriteLine("Ожидание...");
-            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending, 0, 50);
-            for (int i = 0; i < firstTasks.Count; i++)
+            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending);
+            for (var i = 0; i < firstTasks.Count; i++)
             {
                 var task = firstTasks[i];
 
@@ -81,7 +81,9 @@ namespace ConsoleCoreApp
                 Console.WriteLine($"  Ответ команды: {updatedTask.TeamAnswer}");
                 Console.WriteLine();
                 if (updatedTask.Status == TaskStatus.Success)
+                {
                     Console.WriteLine("Ура! Ответ угадан!");
+                }
                 else if (updatedTask.Status == TaskStatus.Failed)
                 {
                     Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
