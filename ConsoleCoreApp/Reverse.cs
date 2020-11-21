@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -5,10 +6,14 @@ namespace ConsoleCoreApp
 {
     public class Reverse
     {
+        const string Alphabet = "abcdefghijklmnopqrstuvwxyz0123456789' ";
         public static string GetAnswer(string data)
         {
             if (Regex.IsMatch(data, "[R, r]everse")) return ReverseStringBuilder(data);
-            return CaesarCode(data);
+            if(data == "Vigenere's code") return GetVigenereCode(data);
+            if(data == "Caesar's code") return GetCaesarCode(data);
+            //if(data == "first longest word") 
+                return GetFirstLongestWorld(data);
         }
 
         private static string ReverseStringBuilder(string str)
@@ -20,9 +25,8 @@ namespace ConsoleCoreApp
             return sb.ToString();
         }
 
-        private static string CaesarCode(string str)
+        private static string GetCaesarCode(string str)
         {
-            var allSymbols = "abcdefghijklmnopqrstuvwxyz0123456789' ";
             var sb = new StringBuilder();
             var parsedString = str.Split('|');
             var data = parsedString[1];
@@ -30,18 +34,33 @@ namespace ConsoleCoreApp
             var code = int.Parse(task.Split('=')[1]);
             for (var i = 0; i < data.Length; i++)
             {
-                var nextIndex = allSymbols.IndexOf(data[i]) - code % allSymbols.Length;
+                var nextIndex = Alphabet.IndexOf(data[i]) - code % Alphabet.Length;
                 if (nextIndex < 0)
-                    sb.Append(allSymbols[allSymbols.Length + nextIndex]);
+                    sb.Append(Alphabet[Alphabet.Length + nextIndex]);
                 else
-                    sb.Append(allSymbols[nextIndex % allSymbols.Length]);
+                    sb.Append(Alphabet[nextIndex % Alphabet.Length]);
             }
             return sb.ToString();
         }
-
-        private static bool Get()
+        
+        public static string GetVigenereCode(string str)
         {
-            return true;
+            var squareVigenere = new Dictionary<char, string>();
+            var stringBuilder = new StringBuilder();
+            foreach (var symbol in Alphabet)
+            {
+                stringBuilder.Append(symbol);
+            }
+            foreach (var symbol in Alphabet)
+            {
+                squareVigenere.Add(symbol, stringBuilder.ToString());
+                stringBuilder.Remove(0, 1);
+            }
+            return null;
+        }
+        public static string GetFirstLongestWorld(string str)
+        {
+            return null;
         }
     }
 }
