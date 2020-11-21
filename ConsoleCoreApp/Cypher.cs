@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace ConsoleCoreApp
 {
-    public class Reverse
+    public class Cypher
     {
         const string Alphabet = "abcdefghijklmnopqrstuvwxyz0123456789' ";
         public static string GetAnswer(string data)
