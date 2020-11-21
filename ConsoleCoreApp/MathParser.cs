@@ -1,18 +1,19 @@
 using System.Collections.Generic;
 using System.Text;
+using NUnit.Framework;
 
 namespace ConsoleCoreApp
 {
-    public static class MathParser
+    public class MathParser
     {
-        public static string GetAnswer(string str)
+        public string GetAnswer(string str)
         {
             var answers = new StringBuilder();
             var tasks = ParseLine(str);
             for (var i = 0; i < tasks.Count; i++)
             {
                 answers.Append(Calculate(tasks[i]));
-                if (i != tasks.Count - 1)
+                if (i < tasks.Count - 1)
                     answers.Append(" ");
             }
 
@@ -20,7 +21,7 @@ namespace ConsoleCoreApp
         }
             
 
-        private static string GetReversePolishNotation(string input)
+        private string GetReversePolishNotation(string input)
         {
             Stack<char> operationStack = new Stack<char>();
             StringBuilder output = new StringBuilder();
@@ -60,7 +61,7 @@ namespace ConsoleCoreApp
         }
 
 
-        private static int Calculate(string input)
+        public int Calculate(string input)
         {
             var str = GetReversePolishNotation(input);
             var operand = string.Empty;
@@ -109,7 +110,7 @@ namespace ConsoleCoreApp
             return stack.Pop();
         }
 
-        private static int GetCharPriority(char ch)
+        private int GetCharPriority(char ch)
         {
             if (ch == '*' || ch == '/' || ch == '%')
                 return 3;
@@ -122,7 +123,7 @@ namespace ConsoleCoreApp
             return 0;
         }
 
-        public static List<string> ParseLine(string line)
+        public List<string> ParseLine(string line)
         {
             var list = new List<string>();
             var i = 0;
@@ -151,7 +152,7 @@ namespace ConsoleCoreApp
             return list;
         }
 
-        private static string ReadField(string line, int startIndex)
+        private string ReadField(string line, int startIndex)
         {
             var value = new StringBuilder();
             var i = startIndex;
@@ -164,7 +165,7 @@ namespace ConsoleCoreApp
             return value.ToString();
         }
 
-        public static string ReadQuotedField(string line, int startIndex)
+        public string ReadQuotedField(string line, int startIndex)
         {
             var tokenEnd = line[startIndex];
             var value = new StringBuilder();
@@ -183,6 +184,29 @@ namespace ConsoleCoreApp
             }
 
             return value.ToString();
+        }
+    }
+
+    [TestFixture]
+    public class MathParserTests
+    {
+        [TestCase("0+6", "6")]
+        [TestCase("\"17 + 7 - 13 / 11\"", "23")]
+        [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", "7 7 0")]
+
+        public void ResultTest(string expression, string expected)
+        {
+            var math = new MathParser();
+            var result = math.GetAnswer(expression);
+            Assert.AreEqual(expected, result);
+        }
+
+        [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", new []{"7 + 3 / 5 * 1", "0+2/6+7", "0 / 10 % 10"})]
+        public void ParserTest(string input, string[] exprs)
+        {
+            var math = new MathParser();
+            var actualList = math.ParseLine(input);
+            CollectionAssert.AreEqual(exprs, actualList);
         }
     }
 }
