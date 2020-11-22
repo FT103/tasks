@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "statistics"; //название задачи
+            const string taskType = "math"; //название задачи
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -67,12 +67,11 @@ namespace ConsoleCoreApp
                 Console.WriteLine();
                 Console.WriteLine("----------------");
                 Console.WriteLine($"Task id: {newTask.TypeId}");
-
-                var bot = new Bot();
+                
                 var answer = Bot.GetAnswer(newTask.TypeId, newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
-                Console.ReadLine();
+                //Console.ReadLine();
                 Console.WriteLine("Ожидание...");
                 var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
                 Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
@@ -85,7 +84,7 @@ namespace ConsoleCoreApp
                 else if (updatedTask.Status == TaskStatus.Failed)
                 {
                     Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
-                    Console.ReadLine();
+                    //Console.ReadLine();
                     break;
                 }
 
