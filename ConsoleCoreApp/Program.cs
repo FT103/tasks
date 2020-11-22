@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "statistics"; //название задачи
+            const string taskType = "string-number"; //название задачи
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;

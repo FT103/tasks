@@ -12,6 +12,7 @@ namespace ConsoleCoreApp
             if (questionType == "moment") return MomentAnswer.GetAnswer(question);
             if (questionType == "cypher") return Reverse.GetAnswer(question);
             if (questionType == "statistics") return Statistics.GetAnswer(question);
+            if (questionType == "string-number") return StringNumber.GetNumberFromString(question).ToString();
             return Console.ReadLine();
         }
     }
