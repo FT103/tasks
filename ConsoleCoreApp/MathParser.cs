@@ -19,12 +19,12 @@ namespace ConsoleCoreApp
 
             return answers.ToString();
         }
-            
+
 
         public string GetReversePolishNotation(string input)
         {
-            Stack<char> operationStack = new Stack<char>();
-            StringBuilder output = new StringBuilder();
+            var operationStack = new Stack<char>();
+            var output = new StringBuilder();
             for (var i = 0; i < input.Length; i++)
             {
                 var priority = GetCharPriority(input[i]);
@@ -135,7 +135,7 @@ namespace ConsoleCoreApp
                     continue;
                 }
 
-                string str = string.Empty;
+                var str = string.Empty;
 
                 if (line[i] == '\"' || line[i] == '\'')
                 {
@@ -143,7 +143,9 @@ namespace ConsoleCoreApp
                     i += 2;
                 }
                 else if (line[i] != ' ')
+                {
                     str = ReadField(line, i);
+                }
 
                 i += str.Length;
                 list.Add(str);
@@ -173,7 +175,9 @@ namespace ConsoleCoreApp
             while (i < line.Length)
             {
                 if (line[i] == '\\')
+                {
                     i++;
+                }
                 else if (line[i] == tokenEnd)
                 {
                     i++;
