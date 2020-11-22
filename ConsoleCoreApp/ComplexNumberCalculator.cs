@@ -60,43 +60,38 @@ namespace ConsoleCoreApp
                     operators.Add(expression[i + 1]);
                 i++;
             }
-
-
+            
             return operators;
         }
-
-        public (string rz, string im) ParseComplexNumber(string expression)
+        
+        public static List<char> GetOperatorsInBox(string expression)
         {
-            var rz = "0+0";
-            var im = "0+0";
-            var current = new StringBuilder();
-            var isIm = false;
-            foreach (var character in expression + '-')
+            var operators = new List<char>();
+            foreach (var character in expression)
             {
-                if (character == '+' || character == '-')
-                {
-                    if (isIm) im += current.ToString();
-                    else rz += current.ToString();
-                    isIm = false;
-                    current.Clear();
-                    current.Append(character);
-                    continue;
-                }
-
-                if (character == 'i')
-                    isIm = true;
-                current.Append(character);
+                if (character == '*' || character == '/' ||
+                    character == '+' || character == '-')
+                    operators.Add(character);
             }
-
-            return (rz, im);
+            
+            return operators;
         }
 
         public Complex GetComplex(string expression)
         {
-            var complex = ParseComplexNumber(expression);
-            var rz = math.Calculate(complex.rz);
-            var im = math.Calculate(complex.im.Replace("i", ""));
-            return new Complex(rz, im);
+            var operators = GetOperatorsInBox(expression);
+            var values = expression.Split(operators.ToArray());
+            var complexes = new List<Complex>();
+            foreach (var value in values)
+            {
+                if (value.IndexOf('i') == -1) complexes.Add(new Complex(int.Parse(value), 0));
+                else
+                {
+                    var im = value.Replace("i", "");
+                    complexes.Add(new Complex(0, int.Parse(im)));
+                }
+            }
+            return Calculate(GetIndexesString(operators), complexes);
         }
 
         public List<Complex> GetComplexes(string expression)
@@ -201,19 +196,6 @@ namespace ConsoleCoreApp
             CollectionAssert.AreEqual(output.ToList(), actualList);
         }
 
-        [TestCase("4+3i", "0+04", "0+0+3i")]
-        [TestCase("6+6-4i*5", "0+06+6", "0+0-4i*5")]
-        [TestCase("0-1", "0+00-1", "0+0")]
-        [TestCase("0+6+4i-0", "0+00+6-0", "0+0+4i")]
-        [TestCase("8i+6-4i+0i", "0+0+6", "0+08i-4i+0i")]
-        public void TestParseComplexNumber(string input, string rz, string im)
-        {
-            var calc = new ComplexNumberCalculator();
-            var actual = calc.ParseComplexNumber(input);
-            Assert.AreEqual(rz, actual.rz);
-            Assert.AreEqual(im, actual.im);
-        }
-
         [TestCase("4+3i", 4, 3)]
         [TestCase("6+6-4i*5", 12, -20)]
         [TestCase("0-1", -1, 0)]
@@ -252,8 +234,8 @@ namespace ConsoleCoreApp
         [TestCase("(5+3i+6i)-(0-9*5i*8)+(3+1)", "9+369i")]
         [TestCase("(1i+1i+4)+(0i*4i+3i)", "4+5i")]
         [TestCase("(1i+1i+4)-(1i+1i+4)", "0")]
-        [TestCase("(1i+1i+4)-(4)", "2i")]
         [TestCase("(1i+1i+4)-(1i+1i)", "4")]
+        [TestCase("(3+9i+11i)+(7+4i+7i*3i)-(5i-0i+9i)", "-11+10i")]
         public void TestAnswer(string expr, string expected)
         {
             var calc = new ComplexNumberCalculator();

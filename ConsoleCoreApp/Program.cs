@@ -27,7 +27,8 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "string-number"; //название задачи
+            const string taskType = "cypher"; //название задачи
+            
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
             foreach (var round in challenge.Rounds)
@@ -66,8 +67,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine();
                 Console.WriteLine("----------------");
                 Console.WriteLine($"Task id: {newTask.TypeId}");
-
-                var bot = new Bot();
+                
                 var answer = Bot.GetAnswer(newTask.TypeId, newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
@@ -86,7 +86,7 @@ namespace ConsoleCoreApp
                 else if (updatedTask.Status == TaskStatus.Failed)
                 {
                     Console.WriteLine("Похоже ответ не подошел и задачу больше сдать нельзя...");
-                    Console.ReadLine();
+                    //Console.ReadLine();
                     break;
                 }
 

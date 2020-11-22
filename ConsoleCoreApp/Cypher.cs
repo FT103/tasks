@@ -92,7 +92,7 @@ namespace ConsoleCoreApp
     
         public static string GetFirstLongestWorld(string str)
         {
-            return null;
+            return "";
         }
     }
 }
