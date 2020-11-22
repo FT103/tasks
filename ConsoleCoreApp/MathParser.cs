@@ -21,7 +21,7 @@ namespace ConsoleCoreApp
         }
             
 
-        private string GetReversePolishNotation(string input)
+        public string GetReversePolishNotation(string input)
         {
             Stack<char> operationStack = new Stack<char>();
             StringBuilder output = new StringBuilder();
@@ -110,7 +110,7 @@ namespace ConsoleCoreApp
             return stack.Pop();
         }
 
-        private int GetCharPriority(char ch)
+        public int GetCharPriority(char ch)
         {
             if (ch == '*' || ch == '/' || ch == '%')
                 return 3;
@@ -193,14 +193,14 @@ namespace ConsoleCoreApp
         [TestCase("0+6", "6")]
         [TestCase("\"17 + 7 - 13 / 11\"", "23")]
         [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", "7 7 0")]
-
+    
         public void ResultTest(string expression, string expected)
         {
             var math = new MathParser();
             var result = math.GetAnswer(expression);
             Assert.AreEqual(expected, result);
         }
-
+    
         [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", new []{"7 + 3 / 5 * 1", "0+2/6+7", "0 / 10 % 10"})]
         public void ParserTest(string input, string[] exprs)
         {

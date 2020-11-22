@@ -19,8 +19,13 @@ namespace ConsoleCoreApp
 
         public string GetAnswer(string expression)
         {
-            var operators = GetOperators(expression);
-            return null;
+            var complex = GetResult(expression);
+            if (complex.Real == 0 && complex.Imaginary == 0) return "0";
+            if (complex.Real == 0) return $"{complex.Imaginary}i";
+            if (complex.Imaginary == 0) return $"{complex.Real}";
+            var rz = $"{complex.Real}";
+            var im = complex.Imaginary > 0 ? $"+{complex.Imaginary}i" : $"{complex.Imaginary}i";
+            return $"{rz}{im}";
         }
 
         public List<string> ParseExpression(string input)
@@ -105,6 +110,73 @@ namespace ConsoleCoreApp
 
             return complexes;
         }
+
+        public Complex GetResult(string expression)
+        {
+            var complexes = GetComplexes(expression);
+            var operators = GetOperators(expression);
+            var result = Calculate(GetIndexesString(operators), complexes);
+            return result;
+        }
+
+        public Complex Calculate(string input, List<Complex> complexes)
+        {
+            var str = math.GetReversePolishNotation(input);
+            var operand = string.Empty;
+            var stack = new Stack<Complex>();
+            for (var i = 0; i < str.Length; i++)
+            {
+                if (str[i] == ' ') continue;
+
+                if (math.GetCharPriority(str[i]) == 0)
+                {
+                    while (str[i] != ' ' && math.GetCharPriority(str[i]) == 0)
+                    {
+                        operand += str[i++];
+                        if (i == str.Length) break;
+                    }
+
+                    stack.Push(complexes[int.Parse(operand)]);
+                    operand = string.Empty;
+                }
+
+                if (math.GetCharPriority(str[i]) > 1)
+                {
+                    var a = stack.Pop();
+                    var b = stack.Pop();
+                    switch (str[i])
+                    {
+                        case '*':
+                            stack.Push(b * a);
+                            break;
+                        case '/':
+                            stack.Push(b / a);
+                            break;
+                        case '+':
+                            stack.Push(b + a);
+                            break;
+                        case '-':
+                            stack.Push(b - a);
+                            break;
+                    }
+                }
+            }
+
+            return stack.Pop();
+        }
+
+        private string GetIndexesString(List<char> operators)
+        {
+            var i = 1;
+            var result = "0";
+            foreach (var o in operators)
+            {
+                result += o;
+                result += i++;
+            }
+
+            return result;
+        }
     }
 
     [TestFixture]
@@ -129,11 +201,11 @@ namespace ConsoleCoreApp
             CollectionAssert.AreEqual(output.ToList(), actualList);
         }
 
-        [TestCase("4+3i", "04", "0+3i")]
-        [TestCase("6+6-4i*5", "06+6", "0-4i*5")]
-        [TestCase("0-1", "00-1", "0")]
-        [TestCase("0+6+4i-0", "00+6-0", "0+4i")]
-        [TestCase("8i+6-4i+0i", "0+6", "08i-4i+0i")]
+        [TestCase("4+3i", "0+04", "0+0+3i")]
+        [TestCase("6+6-4i*5", "0+06+6", "0+0-4i*5")]
+        [TestCase("0-1", "0+00-1", "0+0")]
+        [TestCase("0+6+4i-0", "0+00+6-0", "0+0+4i")]
+        [TestCase("8i+6-4i+0i", "0+0+6", "0+08i-4i+0i")]
         public void TestParseComplexNumber(string input, string rz, string im)
         {
             var calc = new ComplexNumberCalculator();
@@ -155,17 +227,38 @@ namespace ConsoleCoreApp
             Assert.AreEqual(imaginary, actual.Imaginary);
         }
 
+        [TestCase("(5i+2i)+(0i-6*8)", 2)]
         [TestCase("(4+3i)-(4+3i)+(6+6-4i*5)+(0-1)", 4)]
+        [TestCase("(5+3i+6i)-(0-9*5i*8)+(3+1)", 3)]
         public void TestGetComplexes(string expr, int amount)
         {
             var calc = new ComplexNumberCalculator();
-            var complexes = new List<Complex>();
-            complexes.Add(new Complex(4, 3));
-            complexes.Add(new Complex(4, 3));
-            complexes.Add(new Complex(12, -20));
-            complexes.Add(new Complex(-1, 0));
             var actual = calc.GetComplexes(expr);
-            CollectionAssert.AreEqual(complexes, actual);
+            Assert.AreEqual(amount, actual.Count);
+        }
+
+        [TestCase("(4+3i)-(4+3i)+(6+6-4i*5)+(0-1)", 11, -20)]
+        [TestCase("(5+3i+6i)-(0-9*5i*8)+(3+1)", 9, 369)]
+        [TestCase("(1i+1i+4)+(0i*4i+3i)", 4, 5)]
+        public void TestResult(string expr, double rz, double im)
+        {
+            var calc = new ComplexNumberCalculator();
+            var result = calc.GetResult(expr);
+            Assert.AreEqual(rz, result.Real);
+            Assert.AreEqual(im, result.Imaginary);
+        }
+        
+        [TestCase("(4+3i)-(4+3i)+(6+6-4i*5)+(0-1)", "11-20i")]
+        [TestCase("(5+3i+6i)-(0-9*5i*8)+(3+1)", "9+369i")]
+        [TestCase("(1i+1i+4)+(0i*4i+3i)", "4+5i")]
+        [TestCase("(1i+1i+4)-(1i+1i+4)", "0")]
+        [TestCase("(1i+1i+4)-(4)", "2i")]
+        [TestCase("(1i+1i+4)-(1i+1i)", "4")]
+        public void TestAnswer(string expr, string expected)
+        {
+            var calc = new ComplexNumberCalculator();
+            var result = calc.GetAnswer(expr);
+            Assert.AreEqual(expected, result);
         }
     }
 }
