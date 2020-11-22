@@ -5,7 +5,7 @@ namespace ConsoleCoreApp
 {
     public class StringNumber
     {
-        public static int GetNumberFromString(string data)
+        public static long GetNumberFromString(string data)
         {
             var numbersStr = "zero one two three four five six seven eight nine ten eleven twelve thirteen " +
                              "fourteen fifteen sixteen seventeen eighteen nineteen twenty twenty-one twenty-two " +
@@ -24,13 +24,18 @@ namespace ConsoleCoreApp
             var dic = new Dictionary<string, int>();
             for (var i = 0; i < numbers.Length; i++)
                 dic.Add(numbers[i], i);
-            dic.Add("thousand", 1000);
-            dic.Add("million", 1000000);
+            //Console.WriteLine($"{numbers[i]}: {i}");
             var sb = new StringBuilder();
             var words = data.Split(' ');
             var numNow = 0;
+            var stringFormat = "000";
             for (var i = 0; i < words.Length; i++)
-                if (words[i] == "million" || words[i] == "thousand" || words[i] == "hundred")
+                if (words[i] == "million" || words[i] == "thousand" || words[i] == "billion")
+                {
+                    sb.Append(numNow.ToString(stringFormat));
+                    numNow = 0;
+                }
+                else if (words[i] == "hundred")
                 {
                     numNow -= dic[words[i - 1]];
                     numNow += dic[words[i - 1]] * dic[words[i]];
@@ -41,7 +46,7 @@ namespace ConsoleCoreApp
                 }
 
             sb.Append(numNow.ToString());
-            var result = int.Parse(sb.ToString());
+            var result = long.Parse(sb.ToString());
             return result;
         }
     }
