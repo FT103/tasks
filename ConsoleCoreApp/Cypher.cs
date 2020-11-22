@@ -13,7 +13,7 @@ namespace ConsoleCoreApp
             if (Regex.IsMatch(data, "[R, r]everse")) return ReverseStringBuilder(data);
             if (data.StartsWith("Vigenere's code")) return GetVigenereCode(data);
             if (data.StartsWith("Caesar's code")) return GetCaesarCode(data);
-            //if(data == "first longest word") 
+            if (data.StartsWith("prime multiplicator")) return GetMultiplicatorCode(data);
             return GetFirstLongestWorld(data);
         }
 
@@ -25,7 +25,25 @@ namespace ConsoleCoreApp
                 sb.Append(text[1][i]);
             return sb.ToString();
         }
+        private static string GetMultiplicatorCode(string str)
+        {
+            var sb = new StringBuilder();
+            var parsedString = str.Split('|');
+            var data = parsedString[1];
+            var task = parsedString[0];
+            var dic = new Dictionary<char, char>();
 
+            var multiplier = int.Parse(task.Split('=')[1].Split(' ')[0]);
+            for (var i = 0; i < Alphabet.Length; i++)
+            {
+                var newIndex = multiplier * (i + 1) % (Alphabet.Length + 1) - 1;
+                dic.Add(Alphabet[newIndex], Alphabet[i]);
+            }
+
+            foreach (var symbol in data) sb.Append(dic[symbol]);
+
+            return sb.ToString();
+        }
         public static string GetCaesarCode(string str)
         {
             var sb = new StringBuilder();
