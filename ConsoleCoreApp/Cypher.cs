@@ -71,7 +71,7 @@ namespace ConsoleCoreApp
 
             return stringBuilder.ToString();
         }
-
+    
         public static string GetFirstLongestWorld(string str)
         {
             return null;

@@ -15,7 +15,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("Задай секрет своей команды, чтобы можно было делать запросы от ее имени");
                 return;
             }
-
+            
             var challengeClient = new ChallengeClient(teamSecret);
 
             const string challengeId = "projects-course";
@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "cypher"; //название задачи
+            const string taskType = "string-number"; //название задачи
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
             foreach (var round in challenge.Rounds)
@@ -71,7 +71,7 @@ namespace ConsoleCoreApp
                 var answer = Bot.GetAnswer(newTask.TypeId, newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
-                Console.ReadLine();
+                //Console.ReadLine();
                 Console.WriteLine("Ожидание...");
                 var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
                 Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
