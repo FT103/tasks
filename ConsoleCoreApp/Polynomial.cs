@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Globalization;
 using System.Threading;
 
@@ -8,42 +9,51 @@ namespace ConsoleCoreApp
     {
         public static string GetRoot(string task)
         {
-            var parts = new string[2];
-            var otherKoef = new string[2];
-            task = task.Replace(" ", "");
-            if (!IsQuadraticPolynomial(task))
+            Thread.CurrentThread.CurrentCulture = CultureInfo.InvariantCulture;
+            
+            var stringArray = task.Split(" + " );
+            var arraySize = stringArray.Length;
+            var coefficientArray = new double [arraySize];
+            for (var i = 0; i < stringArray.Length; i++)
             {
-                otherKoef = task.Split("*x+");
-                if (otherKoef[0] == "x") otherKoef[0] = "1";
+                var coefficient = double.Parse(stringArray[i].Split('*')[0].Trim('(', ')'), 
+                    CultureInfo.InvariantCulture);
+                coefficientArray[i] = coefficient;
             }
-            else
+            
+            var processInfo = new ProcessStartInfo
             {
-                parts = task.Split("*x^2+");
-                if (parts[0] == task) parts[0] = "1";
-                parts[0] = SearchZeros(parts[0]);
-                if (IsSecondCoef(task))
+                FileName = "python",
+                Arguments = @"ConsoleCoreApp/Polynomial-root.py" + " " 
+                    + String.Join(" ", coefficientArray),
+                RedirectStandardInput = false,
+                RedirectStandardOutput = true,
+                UseShellExecute = false
+            };
+
+            string result;
+
+            using (var process = Process.Start(processInfo))
+            {
+                using (var reader = process.StandardOutput)
                 {
-                    otherKoef = parts[1].Split("*x+");
-                }
-                else
-                {
-                    otherKoef[0] = "0";
-                    otherKoef[1] = task.Split('+')[1];
+                    result = reader.ReadToEnd();
                 }
             }
 
-            otherKoef[0] = SearchZeros(otherKoef[0]);
-            otherKoef[1] = SearchZeros(otherKoef[1]);
-            double a = 0;
-            double b = 0;
-            double c = 0;
-            Thread.CurrentThread.CurrentCulture = new CultureInfo("en-US");
-            if (IsQuadraticPolynomial(task)) a = double.Parse(parts[0]);
-            b = double.Parse(otherKoef[0]);
-            c = double.Parse(otherKoef[1]);
-            if (!IsQuadraticPolynomial(task)) return (-c / b).ToString(CultureInfo.CurrentCulture); //root = -c / b
-            if (b * b - 4 * a * c < 0) return "no roots"; // return
-            return ((-b + Math.Sqrt(b * b - 4 * a * c)) / (2 * a)).ToString(CultureInfo.CurrentCulture);
+            var answer = result.Trim('[', ']', '\r', '\n').Split(' ', 
+                StringSplitOptions.RemoveEmptyEntries);
+            double root = Double.MinValue;
+            foreach (var lol in answer)
+            {
+                if (lol.Contains("0.j") || !lol.Contains('j') || lol.Contains("+0j"))
+                {
+                    root = double.Parse(lol.Split('+')[0]);
+                    break;
+                }
+            }
+
+            return Math.Abs(root - double.MinValue) < 1e-5 ? "no roots" : root.ToString();
         }
 
         private static string DeleteBrackets(string koef)
@@ -51,28 +61,6 @@ namespace ConsoleCoreApp
             if (koef[0] == '(')
                 return koef.Substring(1, koef.Length - 2);
             return koef;
-        }
-
-        private static string SearchZeros(string koef)
-        {
-            if (koef.Length != 0) return DeleteBrackets(koef);
-            return "0";
-        }
-
-        private static bool IsQuadraticPolynomial(string task)
-        {
-            foreach (var symbol in task)
-                if (symbol == '^')
-                    return true;
-            return false;
-        }
-
-        private static bool IsSecondCoef(string task)
-        {
-            for (var i = 0; i < task.Length - 1; i++)
-                if (task[i] == 'x' && task[i + 1] == '+')
-                    return true;
-            return false;
         }
     }
 }

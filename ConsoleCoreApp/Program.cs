@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "cypher"; //название задачи
+            const string taskType = "inverse-matrix"; //название задачи
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
