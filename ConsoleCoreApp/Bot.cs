@@ -13,6 +13,7 @@ namespace ConsoleCoreApp
             if (questionType == "cypher") return Cypher.GetAnswer(question);
             if (questionType == "statistics") return Statistics.GetAnswer(question);
             if (questionType == "string-number") return StringNumber.GetNumberFromString(question).ToString();
+            if (questionType == "inverse-matrix") return InverseMatrix.InverseMatrix1(question).ToString();
             if (questionType == "json") return JsonParser.GetValuesSum(question).ToString();
             return Console.ReadLine();
         }
