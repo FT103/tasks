@@ -15,7 +15,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("Задай секрет своей команды, чтобы можно было делать запросы от ее имени");
                 return;
             }
-
+            
             var challengeClient = new ChallengeClient(teamSecret);
 
             const string challengeId = "projects-course";
@@ -27,8 +27,8 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "inverse-matrix"; //название задачи
-
+            const string taskType = "cypher"; //название задачи
+           
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
             foreach (var round in challenge.Rounds)
