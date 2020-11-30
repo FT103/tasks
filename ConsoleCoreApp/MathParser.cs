@@ -6,10 +6,12 @@ namespace ConsoleCoreApp
 {
     public class MathParser
     {
+        private LineParser lineParser = new LineParser();
         public string GetAnswer(string str)
         {
             var answers = new StringBuilder();
-            var tasks = ParseLine(str);
+            if (!IsExpression(str)) return str;
+            var tasks = lineParser.ParseLine(str);
             for (var i = 0; i < tasks.Count; i++)
             {
                 answers.Append(Calculate(tasks[i]));
@@ -123,78 +125,35 @@ namespace ConsoleCoreApp
             return 0;
         }
 
-        public List<string> ParseLine(string line)
+        public bool IsExpression(string input)
         {
-            var list = new List<string>();
-            var i = 0;
-            while (i < line.Length)
+            foreach (var character in input)
             {
-                if (line[i] == ' ')
-                {
-                    i++;
-                    continue;
-                }
-
-                var str = string.Empty;
-
-                if (line[i] == '\"' || line[i] == '\'')
-                {
-                    str = ReadQuotedField(line, i);
-                    i += 2;
-                }
-                else if (line[i] != ' ')
-                {
-                    str = ReadField(line, i);
-                }
-
-                i += str.Length;
-                list.Add(str);
+                if (GetCharPriority(character) >= 2)
+                    return true;
+                
             }
 
-            return list;
-        }
-
-        private string ReadField(string line, int startIndex)
-        {
-            var value = new StringBuilder();
-            var i = startIndex;
-            while (i < line.Length)
-            {
-                if (line[i] == ' ' || line[i] == '\'' || line[i] == '\"') break;
-                value.Append(line[i++]);
-            }
-
-            return value.ToString();
-        }
-
-        public string ReadQuotedField(string line, int startIndex)
-        {
-            var tokenEnd = line[startIndex];
-            var value = new StringBuilder();
-            var i = startIndex + 1;
-            while (i < line.Length)
-            {
-                if (line[i] == '\\')
-                {
-                    i++;
-                }
-                else if (line[i] == tokenEnd)
-                {
-                    i++;
-                    break;
-                }
-
-                value.Append(line[i++]);
-            }
-
-            return value.ToString();
+            return false;
         }
     }
 
     [TestFixture]
     public class MathParserTests
     {
-        [TestCase("0+6", "6")]
+        [TestCase("6", "6")]
+        [TestCase("6-1", "5")]
+        [TestCase("6+1", "7")]
+        [TestCase("6/2", "3")]
+        [TestCase("6*3", "18")]
+        [TestCase("6%2", "0")]
+        [TestCase("'6 - 1'", "5")]
+        [TestCase("'6 + 1'", "7")]
+        [TestCase("'6 / 2'", "3")]
+        [TestCase("'6 * 3'", "18")]
+        [TestCase("'6 % 2'", "0")]
+        [TestCase("(2+2)*2", "8")]
+        [TestCase("2+2*2", "6")]
         [TestCase("\"17 + 7 - 13 / 11\"", "23")]
         [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", "7 7 0")]
     
@@ -203,14 +162,6 @@ namespace ConsoleCoreApp
             var math = new MathParser();
             var result = math.GetAnswer(expression);
             Assert.AreEqual(expected, result);
-        }
-    
-        [TestCase("\"7 + 3 / 5 * 1\" 0+2/6+7 \"0 / 10 % 10\"", new []{"7 + 3 / 5 * 1", "0+2/6+7", "0 / 10 % 10"})]
-        public void ParserTest(string input, string[] exprs)
-        {
-            var math = new MathParser();
-            var actualList = math.ParseLine(input);
-            CollectionAssert.AreEqual(exprs, actualList);
         }
     }
 }

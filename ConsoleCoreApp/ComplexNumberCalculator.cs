@@ -178,6 +178,8 @@ namespace ConsoleCoreApp
     public class ExpressionParserTest
     {
         [TestCase("(4+3i)-(4+3i)+(6+6-4i*5)+(0-1)", new[] {"4+3i", "4+3i", "6+6-4i*5", "0-1"})]
+        [TestCase("(3+9i+11i)+(7+4i+7i*3i)-(5i-0i+9i)", new[] {"3+9i+11i", "7+4i+7i*3i", "5i-0i+9i"})]
+        [TestCase("(3+10i)+(1+3)+(7i-12-3)", new[] {"3+10i", "1+3", "7i-12-3"})]
         [TestCase("(0+6+4i-0)+(2i+6*5-4)*(4i+5-2)-(8i+6-4i+0i)",
             new[] {"0+6+4i-0", "2i+6*5-4", "4i+5-2", "8i+6-4i+0i"})]
         public void TestParseExpression(string input, string[] output)
@@ -189,6 +191,8 @@ namespace ConsoleCoreApp
 
         [TestCase("(4+3i)-(4+3i)+(6+6-4i*5)+(0-1)", new[] {'-', '+', '+'})]
         [TestCase("(0+6+4i-0)+(2i+6*5-4)*(4i+5-2)-(8i+6-4i+0i)", new[] {'+', '*', '-'})]
+        [TestCase("(3+9i+11i)+(7+4i+7i*3i)-(5i-0i+9i)", new[] {'+', '-'})]
+        [TestCase("(3+10i)+(1+3)+(7i-12-3)", new[] {'+', '+'})]
         public void TestGetOperators(string input, char[] output)
         {
             var calc = new ComplexNumberCalculator();
