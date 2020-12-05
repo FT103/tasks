@@ -47,7 +47,7 @@ namespace ConsoleCoreApp
                     numNow += dic[words[i]];
                 }
 
-            sb.Append(numNow.ToString());
+            sb.Append(numNow.ToString(stringFormat));
             var result = long.Parse(sb.ToString());
             return result;
         }
