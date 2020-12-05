@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "json"; //название задачи
+            const string taskType = "math-random"; //название задачи
 
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -39,23 +39,23 @@ namespace ConsoleCoreApp
             //     $"Нажми ВВОД, чтобы получить первые 50 взятых командой задач типа {taskType} в раунде {currentRound}");
             // Console.ReadLine();
             // Console.WriteLine("Ожидание...");
-            var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending);
-            for (var i = 0; i < firstTasks.Count; i++)
-            {
-                var task = firstTasks[i];
-
-                Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
-                Console.WriteLine($"  Формулировка: {task.UserHint}");
-                Console.WriteLine($"                {task.Question}");
-                Console.WriteLine();
-            }
-
-            Console.WriteLine("----------------");
-            Console.WriteLine();
-
-            Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
-            Console.ReadLine();
-            Console.WriteLine("Ожидание...");
+            // var firstTasks = await challengeClient.GetTasksAsync(currentRound, taskType, TaskStatus.Pending);
+            // for (var i = 0; i < firstTasks.Count; i++)
+            // {
+            //     var task = firstTasks[i];
+            //
+            //     Console.WriteLine($"  Задание {i + 1}, статус {task.Status}");
+            //     Console.WriteLine($"  Формулировка: {task.UserHint}");
+            //     Console.WriteLine($"                {task.Question}");
+            //     Console.WriteLine();
+            // }
+            //
+            // Console.WriteLine("----------------");
+            // Console.WriteLine();
+            //
+            // Console.WriteLine($"Нажми ВВОД, чтобы получить задачу типа {taskType} в раунде {currentRound}");
+            // Console.ReadLine();
+            // Console.WriteLine("Ожидание...");
 
 
             while (true)
@@ -68,10 +68,10 @@ namespace ConsoleCoreApp
                 Console.WriteLine("----------------");
                 Console.WriteLine($"Task id: {newTask.TypeId}");
                 
-                var answer = Bot.GetAnswer(newTask.TypeId, newTask.Question);
+                var answer = Bot.GetAnswer(newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
-                //Console.ReadLine();
+                Console.ReadLine();
                 Console.WriteLine("Ожидание...");
                 var updatedTask = await challengeClient.CheckTaskAnswerAsync(newTask.Id, answer);
                 Console.WriteLine($"  Новое задание, статус {updatedTask.Status}");
