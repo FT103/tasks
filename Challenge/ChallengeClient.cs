@@ -37,6 +37,7 @@ namespace Challenge
             var url = new UriBuilder(baseUrl);
             url.Path = $"/api/challenges/{HttpUtility.UrlEncode(challengeId)}";
             url.Query = query.ToString();
+            Console.Out.WriteLine(url.ToString());
 
             var response = await httpClient.GetAsync(url.ToString());
 
@@ -62,7 +63,7 @@ namespace Challenge
             var url = new UriBuilder(baseUrl);
             url.Path = "/api/tasks";
             url.Query = query.ToString();
-
+            Console.Out.WriteLine(url.ToString());
             var response = await httpClient.PostAsync(url.ToString(), null);
 
             if (response.IsSuccessStatusCode)
@@ -115,7 +116,7 @@ namespace Challenge
             var url = new UriBuilder(baseUrl);
             url.Path = "/api/tasks";
             url.Query = query.ToString();
-
+            Console.Out.WriteLine(url.ToString());
             var response = await httpClient.GetAsync(url.ToString());
 
             if (response.IsSuccessStatusCode)
