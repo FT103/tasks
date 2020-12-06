@@ -62,15 +62,11 @@ class StringNumberTests
     [TestCase("one billion seven hundred twelve million five hundred ninety-one thousand one hundred two", "1712591102")]
     [TestCase("one billion seven hundred twenty-five million six hundred twenty thousand two hundred twenty-seven", "1725620227")]
     [TestCase("five hundred fifty-five million four hundred fifty-three thousand six hundred eighty", "555453680")]
-    [TestCase("one billion seven hundred thirty-three million five hundred seventy-five thousand six hundred sixty-three", "1735575663")]
+    [TestCase("one billion seven hundred thirty-three million five hundred seventy-five thousand six hundred sixty-three", "1733575663")]
     [TestCase("seven hundred ninety million five hundred fifty-seven thousand two hundred thirty-two", "790557232")]
     [TestCase("nine hundred eighty-five million forty-six thousand seven hundred eight", "985046708")]
-    
     [TestCase("eight hundred thirty-six million two hundred sixty-nine thousand eighty", "836269080")]
-    [TestCase("five hundred fifty-five million four hundred fifty-three thousand six hundred eighty", "555453680")]
-    [TestCase("five hundred fifty-five million four hundred fifty-three thousand six hundred eighty", "555453680")]
-    [TestCase("five hundred fifty-five million four hundred fifty-three thousand six hundred eighty", "555453680")]
-    
+
     public void ResultTest(string task, string expected)
     {
         var actual = StringNumber.GetNumberFromString(task).ToString();
