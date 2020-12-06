@@ -7,18 +7,28 @@ namespace ConsoleCoreApp
 {
     public class Bot
     {
-        public static string GetAnswer(string question)
+        public static string GetAnswer(string questionType, string question)
         {
-            var answer = new List<string>();
-            var lineParser = new LineParser();
-            var tasksList = lineParser.ParseLine(question);
-            foreach (var task in tasksList)
+            if (questionType == "math-random")
             {
-                var parts = task.Split('|');
-                var answerByType = GetAnswerByType(parts[0], parts[1]);
-                answer.Add($"\"{answerByType}\"");
+                var answer = new List<string>();
+                var lineParser = new LineParser();
+                var tasksList = lineParser.ParseLine(question);
+                foreach (var task in tasksList)
+                {
+                    var parts = task.Split('|');
+                    var answerByType = GetAnswerByType(parts[0], parts[1]);
+                    answer.Add($"\"{answerByType}\"");
+                }
+                return string.Join(" ", answer);
             }
-            return string.Join(" ", answer);
+
+            if (questionType == "statistics-composition")
+            {
+                return GetAnswerByType("statistics", question);
+            }
+
+            return null;
         }
         public static string GetAnswerByType(string questionType, string question)
         {
@@ -47,14 +57,5 @@ class BotTests
         var lineParser = new LineParser();
         var actual = lineParser.ParseLine(text);
         CollectionAssert.AreEqual(expected, actual);
-    }
-    
-    [TestCase("\"string-number|one hundred eighteen million four hundred fifty-four thousand four hundred seventy-six\" \"string-number|five hundred fifty-one million two hundred sixty-two thousand eight hundred eighty-five\"", 
-         "\"118454476\" \"551262885\"")]
-    public void ResultTest(string text, string expected)
-    {
-        var lineParser = new LineParser();
-        var actual = Bot.GetAnswer(text); 
-        Assert.AreEqual(expected, actual);
     }
 }

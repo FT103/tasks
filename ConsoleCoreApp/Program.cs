@@ -27,7 +27,7 @@ namespace ConsoleCoreApp
             Console.WriteLine();
             Console.WriteLine("----------------");
             Console.WriteLine();
-            const string taskType = "math-random"; //название задачи
+            const string taskType = "statistics-composition"; //название задачи
           
             var utcNow = DateTime.UtcNow;
             string currentRound = null;
@@ -68,7 +68,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("----------------");
                 Console.WriteLine($"Task id: {newTask.TypeId}");
                 
-                var answer = Bot.GetAnswer(newTask.Question);
+                var answer = Bot.GetAnswer(taskType, newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
                 Console.ReadLine();
