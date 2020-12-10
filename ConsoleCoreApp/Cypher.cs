@@ -7,6 +7,7 @@ namespace ConsoleCoreApp
     public class Cypher
     {
         private const string Alphabet = "abcdefghijklmnopqrstuvwxyz0123456789' ";
+        private const char separator = '#';
 
         public static string GetAnswer(string data)
         {
@@ -20,7 +21,7 @@ namespace ConsoleCoreApp
         public static string ReverseStringBuilder(string str)
         {
             var sb = new StringBuilder();
-            var text = str.Split('|');
+            var text = str.Split(separator);
             for (var i = text[1].Length - 1; i >= 0; i--)
                 sb.Append(text[1][i]);
             return sb.ToString();
@@ -28,7 +29,7 @@ namespace ConsoleCoreApp
         private static string GetMultiplicatorCode(string str)
         {
             var sb = new StringBuilder();
-            var parsedString = str.Split('|');
+            var parsedString = str.Split(separator);
             var data = parsedString[1];
             var task = parsedString[0];
             var dic = new Dictionary<char, char>();
@@ -47,7 +48,7 @@ namespace ConsoleCoreApp
         public static string GetCaesarCode(string str)
         {
             var sb = new StringBuilder();
-            var parsedString = str.Split('|');
+            var parsedString = str.Split(separator);
             var data = parsedString[1];
             var task = parsedString[0];
             var code = int.Parse(task.Split('=')[1]);
@@ -76,8 +77,8 @@ namespace ConsoleCoreApp
             }
 
             stringBuilder.Clear();
-            var keyWord = inputStr.Split('|')[0].Split('=')[1];
-            var data = inputStr.Split('|')[1];
+            var keyWord = inputStr.Split(separator)[0].Split('=')[1];
+            var data = inputStr.Split(separator)[1];
 
             for (var i = 0; i < data.Length; i++)
             {

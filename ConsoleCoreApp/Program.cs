@@ -68,7 +68,7 @@ namespace ConsoleCoreApp
                 Console.WriteLine("----------------");
                 Console.WriteLine($"Task id: {newTask.TypeId}");
                 
-                var answer = Bot.GetAnswer(taskType, newTask.Question);
+                var answer = Bot.GetAnswerByType(taskType, newTask.Question);
                 Console.WriteLine(
                     $"Нажми ВВОД, чтобы ответить на полученную задачу самым правильным ответом: {answer}");
                 Console.ReadLine();
