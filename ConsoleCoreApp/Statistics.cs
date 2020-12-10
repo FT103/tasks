@@ -14,8 +14,8 @@ namespace ConsoleCoreApp
         {
             var parsedQuestion = question.Split('|');
             var operationStack = GetOperationsStack(parsedQuestion[0]);
-            var stringArray = parsedQuestion[1];
-
+            var stringArray = MathTask.GetAnswer(parsedQuestion[1]+0);
+            
             var list = GetList(stringArray);
             if (list.Count != 0)
             {
@@ -40,9 +40,14 @@ namespace ConsoleCoreApp
 
                     if (fun.StartsWith("take"))
                     {
-                        foreach (var character in fun)
-                        {
-                        }
+                        var n = int.Parse(fun.Substring(5, fun.Length - 6));
+                        list = Take(list, n);
+                    }
+
+                    if (fun.StartsWith("skip"))
+                    {
+                        var n = int.Parse(fun.Substring(5, fun.Length - 6));
+                        list = Skip(list, n);
                     }
                         
 
@@ -83,6 +88,16 @@ namespace ConsoleCoreApp
             }
 
             return string.Empty;
+        }
+
+        private static List<int> Take(List<int> list, int N)
+        {
+            return list.Take(N).ToList();
+        }
+
+        private static List<int> Skip(List<int> list, int N)
+        {
+            return list.Skip(N).ToList();
         }
 
         private static void Increment(List<int> list)
